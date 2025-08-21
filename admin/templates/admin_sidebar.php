@@ -44,6 +44,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'smtp_settings.php' ? 'active' : ''; ?>" href="smtp_settings.php">
+                    <i class="bi bi-envelope me-1"></i>
+                    邮箱配置
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'logs.php' ? 'active' : ''; ?>" href="logs.php">
                     <i class="bi bi-journal-text me-1"></i>
                     系统日志

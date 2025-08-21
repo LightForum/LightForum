@@ -123,6 +123,25 @@ include __DIR__ . '/templates/admin_header.php';
                             <input type="number" class="form-control" id="posts_per_page" name="posts_per_page" value="<?php echo $posts_per_page; ?>" min="1" max="100" required>
                         </div>
                         
+                        <div class="mb-3">
+                            <label for="password_reset_expires" class="form-label">密码重置链接有效期</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="password_reset_expires" name="password_reset_expires" 
+                                       value="<?php echo htmlspecialchars(getSetting('password_reset_expires', 60)); ?>" required>
+                                <span class="input-group-text">分钟</span>
+                            </div>
+                            <div class="form-text">密码重置链接的有效时间</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="account_activation_expires" class="form-label">账户激活链接有效期</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="account_activation_expires" name="account_activation_expires" 
+                                       value="<?php echo htmlspecialchars(getSetting('account_activation_expires', 24)); ?>" required>
+                                <span class="input-group-text">小时</span>
+                            </div>
+                            <div class="form-text">账户激活链接的有效时间</div>
+                        </div>
                         <button type="submit" class="btn btn-primary">保存设置</button>
                     </form>
                 </div>
