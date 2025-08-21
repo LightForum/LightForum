@@ -30,20 +30,20 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><?php echo htmlspecialchars(getSetting('site_name', 'PHP轻论坛')); ?></a>
+            <a class="navbar-brand" href="<?php echo getHomeUrl(); ?>"><?php echo htmlspecialchars(getSetting('site_name', 'PHP轻论坛')); ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">首页</a>
+                        <a class="nav-link" href="<?php echo getHomeUrl(); ?>">首页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="categories.php">分类</a>
+                        <a class="nav-link" href="<?php echo getCategoriesUrl(); ?>">分类</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="search.php">搜索</a>
+                        <a class="nav-link" href="<?php echo getSearchUrl(); ?>">搜索</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -53,20 +53,20 @@
                                 <?php echo htmlspecialchars($_SESSION['username'] ?? '用户'); ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="profile.php">个人资料</a></li>
+                                <li><a class="dropdown-item" href="<?php echo getUserProfileUrl($_SESSION['user_id']); ?>">个人资料</a></li>
                                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                                    <li><a class="dropdown-item" href="admin/index.php">管理后台</a></li>
+                                    <li><a class="dropdown-item" href="<?php echo getAdminUrl(); ?>">管理后台</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="logout.php">退出登录</a></li>
+                                <li><a class="dropdown-item" href="<?php echo getLogoutUrl(); ?>">退出登录</a></li>
                             </ul>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">登录</a>
+                            <a class="nav-link" href="<?php echo getLoginUrl(); ?>">登录</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="register.php">注册</a>
+                            <a class="nav-link" href="<?php echo getRegisterUrl(); ?>">注册</a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -76,4 +76,3 @@
     
     <div class="main-content py-4">
         <!-- 页面内容将在这里 -->
-

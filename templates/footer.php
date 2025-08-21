@@ -7,7 +7,7 @@
                     <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(getSetting('site_name', 'PHP轻论坛')); ?>. 保留所有权利。</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0">Powered by <a href="#" target="_blank">PHP轻论坛 v3.0</a></p>
+                    <p class="mb-0">Powered by <a href="#" target="_blank">PHP轻论坛 v3.4</a></p>
                 </div>
             </div>
         </div>

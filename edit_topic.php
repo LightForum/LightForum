@@ -18,7 +18,7 @@ if (!file_exists(__DIR__ . '/config/config.php')) {
 
 // 检查是否已登录
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ' . getLoginUrl());
     exit;
 }
 
@@ -31,7 +31,7 @@ require_once __DIR__ . '/includes/functions.php';
 $topic_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($topic_id <= 0) {
-    header('Location: index.php');
+    header('Location: ' . getHomeUrl());
     exit;
 }
 
@@ -52,13 +52,13 @@ try {
     );
     
     if (!$topic) {
-        header('Location: index.php');
+        header('Location: ' . getHomeUrl());
         exit;
     }
     
     // 检查当前用户是否有权限编辑该主题
     if ($topic['user_id'] != $_SESSION['user_id'] && !isAdmin()) {
-        header('Location: topic.php?id=' . $topic_id);
+        header('Location: ' . getTopicUrl($topic_id));
         exit;
     }
     
@@ -94,20 +94,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = '所选分类不存在';
             } else {
                 // 更新主题
-                $db->update("{$prefix}topics", [
-                    'category_id' => $category_id,
-                    'title' => $title,
-                    'content' => $content,
-                    'updated_at' => date('Y-m-d H:i:s')
-                ], ['id' => $topic_id]);
-                
+                $db->update(
+                    "{$prefix}topics",
+                    [
+                        'category_id' => $category_id,
+                        'title' => $title,
+                        'content' => $content,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ],
+                    'id = :id',
+                    ['id' => $topic_id]
+                );
+
                 // 记录编辑主题日志
                 logAction('edit_topic', 'topic', $topic_id);
                 
                 $success = '主题更新成功';
                 
                 // 重定向到主题页面
-                header('Location: topic.php?id=' . $topic_id);
+                header('Location: ' . getTopicUrl($topic_id, null, $title));
                 exit;
             }
         } catch (Exception $e) {
@@ -128,9 +133,9 @@ include __DIR__ . '/templates/header.php';
         <h1>编辑主题</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="index.php">首页</a></li>
-                <li class="breadcrumb-item"><a href="category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a></li>
-                <li class="breadcrumb-item"><a href="topic.php?id=<?php echo $topic_id; ?>"><?php echo htmlspecialchars($topic['title']); ?></a></li>
+                <li class="breadcrumb-item"><a href="<?php echo getHomeUrl(); ?>">首页</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo getCategoryUrl($topic['category_id'], null, $topic['category_title']); ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a></li>
+                <li class="breadcrumb-item"><a href="<?php echo getTopicUrl($topic_id, null, $topic['title']); ?>"><?php echo htmlspecialchars($topic['title']); ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page">编辑主题</li>
             </ol>
         </nav>
@@ -149,7 +154,7 @@ include __DIR__ . '/templates/header.php';
                 <div class="alert alert-success"><?php echo $success; ?></div>
             <?php endif; ?>
             
-            <form method="post" action="edit_topic.php?id=<?php echo $topic_id; ?>">
+            <form method="post" action="<?php echo getEditTopicUrl($topic_id); ?>">
                 <div class="mb-3">
                     <label for="category_id" class="form-label">选择分类</label>
                     <select class="form-select" id="category_id" name="category_id" required>
@@ -176,7 +181,7 @@ include __DIR__ . '/templates/header.php';
                 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">保存修改</button>
-                    <a href="topic.php?id=<?php echo $topic_id; ?>" class="btn btn-secondary">取消</a>
+                    <a href="<?php echo getTopicUrl($topic_id, null, $topic['title']); ?>" class="btn btn-secondary">取消</a>
                 </div>
             </form>
         </div>

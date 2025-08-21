@@ -140,20 +140,11 @@ include __DIR__ . '/templates/header.php';
     
     <div class="card mb-4">
         <div class="card-body">
-            <form method="get" action="search.php" class="row g-3">
-                <div class="col-md-6">
+            <form method="get" action="<?php echo getSearchUrl(); ?>" class="row g-3">
+                <div class="col-md-9">
                     <label for="keyword" class="form-label">关键词</label>
                     <input type="text" class="form-control" id="keyword" name="keyword" value="<?php echo htmlspecialchars($keyword); ?>" required>
                 </div>
-                
-                <div class="col-md-3">
-                    <label for="type" class="form-label">搜索范围</label>
-                    <select class="form-select" id="type" name="type">
-                        <option value="topics" <?php echo $type === 'topics' ? 'selected' : ''; ?>>主题</option>
-                        <option value="posts" <?php echo $type === 'posts' ? 'selected' : ''; ?>>回复</option>
-                    </select>
-                </div>
-                
                 <div class="col-md-3">
                     <label for="category_id" class="form-label">分类</label>
                     <select class="form-select" id="category_id" name="category_id">
@@ -188,7 +179,7 @@ include __DIR__ . '/templates/header.php';
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="mb-1">
-                                        <a href="topic.php?id=<?php echo $topic['id']; ?>"><?php echo highlightKeyword($topic['title'], $keyword); ?></a>
+                                        <a href="<?php echo getTopicUrl($topic['id'], null, $topic['title']); ?>"><?php echo highlightKeyword($topic['title'], $keyword); ?></a>
                                     </h5>
                                     <small>
                                         <span class="badge bg-primary rounded-pill"><?php echo $topic['reply_count']; ?> 回复</span>
@@ -196,7 +187,7 @@ include __DIR__ . '/templates/header.php';
                                 </div>
                                 <p class="mb-1"><?php echo highlightKeyword(mb_substr(strip_tags($topic['content']), 0, 200) . '...', $keyword); ?></p>
                                 <small class="text-muted">
-                                    分类: <a href="category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a> | 
+                                    分类: <a href="<?php echo getCategoryUrl($topic['category_id'], null, $topic['category_title']); ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a> | 
                                     作者: <?php echo htmlspecialchars($topic['username']); ?> | 
                                     发表于: <?php echo formatDateTime($topic['created_at']); ?>
                                 </small>
@@ -207,12 +198,12 @@ include __DIR__ . '/templates/header.php';
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="mb-1">
-                                        <a href="topic.php?id=<?php echo $post['topic_id']; ?>#post-<?php echo $post['id']; ?>">回复: <?php echo htmlspecialchars($post['topic_title']); ?></a>
+                                        <a href="<?php echo getTopicUrl($topic['id'], null, $topic['topic_id'], null, $post['topic_title']); ?>#post-<?php echo $post['id']; ?>">回复: <?php echo htmlspecialchars($post['topic_title']); ?></a>
                                     </h5>
                                 </div>
                                 <p class="mb-1"><?php echo highlightKeyword(mb_substr(strip_tags($post['content']), 0, 200) . '...', $keyword); ?></p>
                                 <small class="text-muted">
-                                    分类: <a href="category.php?id=<?php echo $post['category_id']; ?>"><?php echo htmlspecialchars($post['category_title']); ?></a> | 
+                                    分类: <a href="<?php echo getCategoryUrl($topic['category_id'], null, $topic['category_title']); ?>"><?php echo htmlspecialchars($post['category_title']); ?></a> | 
                                     作者: <?php echo htmlspecialchars($post['username']); ?> | 
                                     发表于: <?php echo formatDateTime($post['created_at']); ?>
                                 </small>

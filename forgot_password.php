@@ -59,14 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resetExpiresMinutes = (int)getSetting('password_reset_expires', 60);
                 
                 // 生成重置令牌
-                $resetToken = bin2hex(random_bytes(32));
+                $token = bin2hex(random_bytes(32));
                 $resetExpires = date('Y-m-d H:i:s', strtotime("+{$resetExpiresMinutes} minutes"));
                 
                 // 更新用户的重置令牌
                 $db->update(
                     "{$prefix}users",
                     [
-                        'reset_token' => $resetToken,
+                        'reset_token' => $token,
                         'reset_expires' => $resetExpires
                     ],
                     'id = :id',
@@ -74,9 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 );
                 
                 // 构建完整的重置密码链接
-                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-                $domain = $_SERVER['HTTP_HOST'];
-                $resetLink = $protocol . $domain . '/reset_password.php?token=' . $resetToken;
+                $resetLink = getResetPasswordUrl($token);
                 
                 // 构建邮件内容
                 $emailSubject = '重置您的密码';
@@ -137,7 +135,7 @@ include __DIR__ . '/templates/header.php';
                     <?php endif; ?>
                     
                     <?php if (empty($success)): ?>
-                        <form method="post" action="forgot_password.php">
+                        <form method="post" action="<?php echo getForgotPasswordUrl(); ?>">
                             <div class="mb-3">
                                 <label for="email" class="form-label">邮箱地址</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
@@ -145,7 +143,7 @@ include __DIR__ . '/templates/header.php';
                             </div>
                             
                             <button type="submit" class="btn btn-primary">发送重置链接</button>
-                            <a href="login.php" class="btn btn-secondary">返回登录</a>
+                            <a href="<?php echo getLoginUrl(); ?>" class="btn btn-secondary">返回登录</a>
                         </form>
                     <?php endif; ?>
                 </div>

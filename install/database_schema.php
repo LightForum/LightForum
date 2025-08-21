@@ -23,6 +23,7 @@ function getDatabaseSchema($prefix = 'forum_') {
             `last_login` datetime DEFAULT NULL,
             `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
             `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `updated_ip` varchar(255) DEFAULT NULL,
             `reset_token` varchar(255) DEFAULT NULL,
             `reset_expires` datetime DEFAULT NULL,
             PRIMARY KEY (`id`),

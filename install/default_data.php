@@ -20,6 +20,12 @@ function getDefaultData($prefix = 'forum_') {
                 'description' => '网站名称'
             ],
             [
+                'setting_key' => 'site_title',
+                'setting_value' => 'PHP轻论坛',
+                'setting_type' => 'string',
+                'description' => '首页标题'
+            ],
+            [
                 'setting_key' => 'site_description',
                 'setting_value' => '一个简单易用的PHP论坛程序',
                 'setting_type' => 'string',

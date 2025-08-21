@@ -120,15 +120,15 @@ include __DIR__ . '/templates/header.php';
                     
                     <?php if (!empty($success)): ?>
                         <div class="alert alert-success"><?php echo $success; ?></div>
-                        <a href="login.php" class="btn btn-primary">登录</a>
+                        <a href="<?php echo getLoginUrl(); ?>" class="btn btn-primary">登录</a>
                     <?php elseif ($invalidToken): ?>
                         <div class="alert alert-danger">
                             <p>您的重置链接无效或已过期。</p>
-                            <p>请返回<a href="forgot_password.php">忘记密码</a>页面重新请求重置密码。</p>
+                            <p>请返回<a href="<?php echo getForgotPasswordUrl(); ?>">忘记密码</a>页面重新请求重置密码。</p>
                         </div>
-                        <a href="forgot_password.php" class="btn btn-primary">重新请求</a>
+                        <a href="<?php echo getForgotPasswordUrl(); ?>" class="btn btn-primary">重新请求</a>
                     <?php else: ?>
-                        <form method="post" action="reset_password.php?token=<?php echo htmlspecialchars($token); ?>">
+                        <form method="post" action="<?php echo getResetPasswordUrl($token); ?>">
                             <div class="mb-3">
                                 <label for="password" class="form-label">新密码</label>
                                 <input type="password" class="form-control" id="password" name="password" required minlength="8">
@@ -142,7 +142,7 @@ include __DIR__ . '/templates/header.php';
                             </div>
                             
                             <button type="submit" class="btn btn-primary">重置密码</button>
-                            <a href="login.php" class="btn btn-secondary">取消</a>
+                            <a href="<?php echo getLoginUrl(); ?>" class="btn btn-secondary">取消</a>
                         </form>
                     <?php endif; ?>
                 </div>

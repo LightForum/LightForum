@@ -31,14 +31,19 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $site_name = $_POST['site_name'] ?? '';
+    $site_title = $_POST['site_title'] ?? '';
     $site_description = $_POST['site_description'] ?? '';
     $allow_registration = isset($_POST['allow_registration']) ? '1' : '0';
     $topics_per_page = (int)$_POST['topics_per_page'];
     $posts_per_page = (int)$_POST['posts_per_page'];
+    $password_reset_expires = (int)$_POST['password_reset_expires'];
+    $account_activation_expires = (int)$_POST['account_activation_expires'];
     
     // 验证输入
     if (empty($site_name)) {
         $error = '站点名称不能为空';
+    } elseif (empty($site_title)) {
+        $error = '首页标题不能为空';
     } else if ($topics_per_page < 1 || $topics_per_page > 100) {
         $error = '每页主题数必须在1-100之间';
     } else if ($posts_per_page < 1 || $posts_per_page > 100) {
@@ -47,10 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // 更新设置
             setSetting('site_name', $site_name);
+            setSetting('site_title', $site_title);
             setSetting('site_description', $site_description);
             setSetting('allow_registration', $allow_registration);
             setSetting('topics_per_page', $topics_per_page);
             setSetting('posts_per_page', $posts_per_page);
+            setSetting('password_reset_expires', $password_reset_expires);
+            setSetting('account_activation_expires', $account_activation_expires);
             
             // 记录操作日志
             logAdminAction('update_settings');
@@ -64,10 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // 获取当前设置
 $site_name = getSetting('site_name', '');
+$site_title = getSetting('site_title', '');
 $site_description = getSetting('site_description', '');
 $allow_registration = getSetting('allow_registration', '1');
 $topics_per_page = (int)getSetting('topics_per_page', 20);
 $posts_per_page = (int)getSetting('posts_per_page', 15);
+$password_reset_expires = (int)getSetting('password_reset_expires', 60);
+$account_activation_expires = (int)getSetting('account_activation_expires', 24);
 
 // 设置页面标题
 $page_title = '系统设置';
@@ -101,6 +112,11 @@ include __DIR__ . '/templates/admin_header.php';
                         <div class="mb-3">
                             <label for="site_name" class="form-label">站点名称</label>
                             <input type="text" class="form-control" id="site_name" name="site_name" value="<?php echo htmlspecialchars($site_name); ?>" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="site_title" class="form-label">首页标题</label>
+                            <input type="text" class="form-control" id="site_title" name="site_title" value="<?php echo htmlspecialchars($site_title); ?>" required>
                         </div>
                         
                         <div class="mb-3">
