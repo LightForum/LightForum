@@ -152,109 +152,109 @@ include __DIR__ . '/templates/header.php';
 ?>
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>用户资料</h5>
-                </div>
-                <div class="card-body text-center">
-                    <div class="mb-3">
-                        <?php if (!empty($user['avatar'])): ?>
-                            <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="<?php echo htmlspecialchars($user['username']); ?>" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
-                        <?php else: ?>
-                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto" style="width: 150px; height: 150px; font-size: 64px;">
-                                <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <h5><?php echo htmlspecialchars($user['username']); ?></h5>
-                    <p class="text-muted">
-                        <?php if ($user['role'] === 'admin'): ?>
-                            <span class="badge bg-danger">管理员</span>
-                        <?php elseif ($user['role'] === 'moderator'): ?>
-                            <span class="badge bg-warning">版主</span>
-                        <?php else: ?>
-                            <span class="badge bg-secondary">会员</span>
-                        <?php endif; ?>
-                    </p>
-                    
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            注册时间
-                            <span><?php echo formatDateTime($user['created_at'], 'Y-m-d'); ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            最后登录
-                            <span><?php echo $user['last_login'] ? formatDateTime($user['last_login'], 'Y-m-d') : '从未'; ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            主题数
-                            <span class="badge bg-primary rounded-pill"><?php echo $topic_count; ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            回复数
-                            <span class="badge bg-primary rounded-pill"><?php echo $post_count; ?></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <?php if (isset($error) && !isset($user)): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+    <?php else: ?>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><?php echo htmlspecialchars($user['username']); ?> 的个人资料</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="<?php echo getHomeUrl(); ?>">首页</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">用户资料</li>
+                </ol>
+            </nav>
         </div>
         
-        <div class="col-md-8">
-            <?php if ($user_id == $_SESSION['user_id']): ?>
+        <div class="row">
+            <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5>编辑个人资料</h5>
+                        <h5 class="mb-0">基本信息</h5>
                     </div>
                     <div class="card-body">
-                        <?php if (!empty($error)): ?>
-                            <div class="alert alert-danger"><?php echo $error; ?></div>
-                        <?php endif; ?>
+                        <div class="text-center mb-3">
+                            <img src="<?php echo !empty($user['avatar']) ? htmlspecialchars($user['avatar']) : 'https://kzwl.top/qq_avatar.php?qq=' . strtolower(trim($user['email'])); ?>" alt="<?php echo htmlspecialchars($user['username']); ?>" class="rounded-circle" style="width: 100px; height: 100px;">
+                        </div>
                         
-                        <?php if (!empty($success)): ?>
-                            <div class="alert alert-success"><?php echo $success; ?></div>
-                        <?php endif; ?>
-                        
-                        <form method="post" action="profile.php">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">用户名</label>
-                                <input type="text" class="form-control" id="username" value="<?php echo htmlspecialchars($user['username']); ?>" disabled>
-                                <div class="form-text">用户名无法更改</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="email" class="form-label">电子邮件</label>
-                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                            </div>
-                            
-                            <hr>
-                            
-                            <h6>更改密码</h6>
-                            <div class="mb-3">
-                                <label for="current_password" class="form-label">当前密码</label>
-                                <input type="password" class="form-control" id="current_password" name="current_password">
-                                <div class="form-text">仅在需要更改密码时填写</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="new_password" class="form-label">新密码</label>
-                                <input type="password" class="form-control" id="new_password" name="new_password" minlength="6">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="confirm_password" class="form-label">确认新密码</label>
-                                <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">保存更改</button>
-                            </div>
-                        </form>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>用户名</span>
+                                <span><?php echo htmlspecialchars($user['username']); ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>角色</span>
+                                <span>
+                                    <?php if ($user['role'] === 'admin'): ?>
+                                        <span class="badge bg-danger">管理员</span>
+                                    <?php elseif ($user['role'] === 'moderator'): ?>
+                                        <span class="badge bg-warning">版主</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary">普通用户</span>
+                                    <?php endif; ?>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>注册时间</span>
+                                <span><?php echo formatDateTime($user['created_at'], 'Y-m-d'); ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>主题数</span>
+                                <span><?php echo $topic_count; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>回复数</span>
+                                <span><?php echo $post_count; ?></span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            <?php endif; ?>
+            </div>
+            
+            <div class="col-md-8">
+                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $user_id): ?>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">编辑个人资料</h5>
+                        </div>
+                        <div class="card-body">
+                            <?php if (!empty($error)): ?>
+                                <div class="alert alert-danger"><?php echo $error; ?></div>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($success)): ?>
+                                <div class="alert alert-success"><?php echo $success; ?></div>
+                            <?php endif; ?>
+                            
+                            <form method="post" action="<?php echo getUserProfileUrl($user_id); ?>">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">电子邮箱</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                                </div>
+
+                                <h6>修改密码（如不修改请留空）</h6>
+                                
+                                <div class="mb-3">
+                                    <label for="current_password" class="form-label">当前密码</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="new_password" class="form-label">新密码</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password" minlength="6">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">确认新密码</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" minlength="6">
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">保存修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php endif; ?>
             
             <div class="card mb-4">
                 <div class="card-header">
@@ -264,13 +264,22 @@ include __DIR__ . '/templates/header.php';
                     <?php if (count($recent_topics) > 0): ?>
                         <div class="list-group">
                             <?php foreach ($recent_topics as $topic): ?>
-                                <a href="topic.php?id=<?php echo $topic['id']; ?>" class="list-group-item list-group-item-action">
+                                <div class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1"><?php echo htmlspecialchars($topic['title']); ?></h6>
-                                        <small><?php echo formatDateTime($topic['created_at']); ?></small>
+                                        <h6 class="mb-1"><a href="<?php echo getTopicUrl($topic['id'], null, $topic['title']); ?>"><?php echo htmlspecialchars($topic['title']); ?></a></h6>
+                                        <div class="d-flex gap-2">
+                                            <small><?php echo formatDateTime($topic['created_at']); ?></small>
+                                            <?php if ($topic['user_id'] == $_SESSION['user_id'] ||$_SESSION['role'] == 'admin'): ?>
+                                                <a href="delete.php?type=topic&id=<?php echo $topic['id']; ?>&redirect=user.php" 
+                                                   class="text-danger confirm-action" 
+                                                   data-confirm-message="确定要删除这个主题吗？这将删除所有相关回复。">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                     <p class="mb-1"><?php echo mb_substr(strip_tags($topic['content']), 0, 100) . '...'; ?></p>
-                                </a>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
@@ -287,13 +296,22 @@ include __DIR__ . '/templates/header.php';
                     <?php if (count($recent_posts) > 0): ?>
                         <div class="list-group">
                             <?php foreach ($recent_posts as $post): ?>
-                                <a href="topic.php?id=<?php echo $post['topic_id']; ?>#post-<?php echo $post['id']; ?>" class="list-group-item list-group-item-action">
+                                <div class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">回复: <?php echo htmlspecialchars($post['topic_title']); ?></h6>
-                                        <small><?php echo formatDateTime($post['created_at']); ?></small>
+                                        <h6 class="mb-1"><a href="<?php echo getTopicUrl($post['topic_id'], null, $post['topic_title']); ?>#post-<?php echo $post['id']; ?>">回复: <?php echo htmlspecialchars($post['topic_title']); ?></a></h6>
+                                        <div class="d-flex gap-2">
+                                            <small><?php echo formatDateTime($post['created_at']); ?></small>
+                                            <?php if ($post['user_id'] == $_SESSION['user_id'] ||$_SESSION['role'] == 'admin'): ?>
+                                                <a href="delete.php?type=post&id=<?php echo $post['id']; ?>&redirect=user.php" 
+                                                   class="text-danger confirm-action" 
+                                                   data-confirm-message="确定要删除这个回复吗？">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                     <p class="mb-1"><?php echo mb_substr(strip_tags($post['content']), 0, 100) . '...'; ?></p>
-                                </a>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
@@ -303,10 +321,25 @@ include __DIR__ . '/templates/header.php';
             </div>
         </div>
     </div>
+    <?php endif; ?>
 </div>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 删除确认对话框
+    const confirmButtons = document.querySelectorAll('.confirm-action');
+    confirmButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const confirmMessage = this.getAttribute('data-confirm-message') || '确定要执行此操作吗？';
+            
+            if (confirm(confirmMessage)) {
+                window.location.href = this.href;
+            }
+        });
+    });
+});
+</script>
 <?php
 // 加载页面底部
 include __DIR__ . '/templates/footer.php';
 ?>
-

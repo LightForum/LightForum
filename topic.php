@@ -25,7 +25,7 @@ require_once __DIR__ . '/includes/functions.php';
 $topic_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($topic_id <= 0) {
-    header('Location: index.php');
+    header('Location: ' . getHomeUrl());
     exit;
 }
 
@@ -54,7 +54,7 @@ try {
     );
     
     if (!$topic) {
-        header('Location: index.php');
+        header('Location: ' . getHomeUrl());
         exit;
     }
     
@@ -153,7 +153,7 @@ try {
                 $new_total_posts = $total_posts + 1;
                 $new_total_pages = ceil(($new_total_posts + 1) / $posts_per_page);
                 
-                header('Location: topic.php?id=' . $topic_id . '&page=' . $new_total_pages . '#post-' . $post_id);
+                header('Location: ' . getTopicUrl($topic_id, $new_total_pages, $topic['title']) . '#post-' . $post_id);
                 exit;
             } catch (Exception $e) {
                 $error = '回复失败: ' . $e->getMessage();
@@ -171,7 +171,9 @@ $page_title = isset($topic) ? $topic['title'] : '主题详情';
 // 加载页面头部
 include __DIR__ . '/templates/header.php';
 ?>
-
+<style>
+    .topic-content img{max-width: 100%;}
+</style>
 <div class="container mt-4">
     <?php if (isset($error) && !isset($topic)): ?>
         <div class="alert alert-danger"><?php echo $error; ?></div>
@@ -180,9 +182,9 @@ include __DIR__ . '/templates/header.php';
             <h1><?php echo htmlspecialchars($topic['title']); ?></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.php">首页</a></li>
-                    <li class="breadcrumb-item"><a href="categories.php">分类列表</a></li>
-                    <li class="breadcrumb-item"><a href="category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo getHomeUrl(); ?>">首页</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo getCategoriesUrl(); ?>">分类列表</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo getCategoryUrl($topic['category_id'], null, $topic['category_title']); ?>"><?php echo htmlspecialchars($topic['category_title']); ?></a></li>
                     <li class="breadcrumb-item active" aria-current="page">主题详情</li>
                 </ol>
             </nav>
@@ -197,7 +199,12 @@ include __DIR__ . '/templates/header.php';
                     </div>
                     <div>
                         <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $topic['user_id'] || $_SESSION['role'] == 'admin')): ?>
-                            <a href="edit_topic.php?id=<?php echo $topic_id; ?>" class="btn btn-sm btn-outline-primary">编辑</a>
+                            <a href="<?php echo getEditTopicUrl($topic_id); ?>" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i><!-- 编辑图标 --></a>
+                            <a href="delete.php?type=topic&id=<?php echo $topic['id']; ?>&redirect=user.php" 
+                               class="text-danger confirm-action btn btn-sm btn-outline-danger" 
+                               data-confirm-message="确定要删除这个主题吗？这将删除所有相关回复。">
+                                <i class="bi bi-trash"></i><!-- 删除图标 -->
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -223,8 +230,13 @@ include __DIR__ . '/templates/header.php';
                             <span class="text-muted ms-2"><?php echo formatDateTime($post['created_at']); ?></span>
                         </div>
                         <div>
-                            <?php if (isset($_SESSION['user_id'])): ?>
-                                <button class="btn btn-sm btn-outline-secondary reply-btn" data-post-id="<?php echo $post['id']; ?>" data-username="<?php echo htmlspecialchars($post['username']); ?>">回复</button>
+                            <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $topic['user_id'] || $_SESSION['role'] == 'admin')): ?>
+                                <button class="btn btn-sm btn-outline-secondary reply-btn" data-post-id="<?php echo $post['id']; ?>" data-username="<?php echo htmlspecialchars($post['username']); ?>"><i class="bi bi-reply-fill"></i><!-- 编辑图标 --></button>
+                                <a href="delete.php?type=post&id=<?php echo $post['id']; ?>&redirect=user.php" 
+                                   class="text-danger confirm-action btn btn-sm btn-outline-danger" 
+                                   data-confirm-message="确定要删除这个回复吗？">
+                                    <i class="bi bi-trash"></i><!-- 删除图标 -->
+                                </a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -259,7 +271,10 @@ include __DIR__ . '/templates/header.php';
         
         <?php if ($total_pages > 1): ?>
             <div class="mb-4">
-                <?php echo generatePagination($page, $total_pages, 'topic.php?id=' . $topic_id . '&page=%d'); ?>
+                <?php 
+                    $pagination_url = getPaginationUrlPattern('topic.php', ['id' => $topic_id]);
+                    echo generatePagination($page, $total_pages, $pagination_url); 
+                ?>
             </div>
         <?php endif; ?>
         
@@ -277,7 +292,7 @@ include __DIR__ . '/templates/header.php';
                         <div class="alert alert-success"><?php echo $success; ?></div>
                     <?php endif; ?>
                     
-                    <form method="post" action="topic.php?id=<?php echo $topic_id; ?>" id="reply-form">
+                    <form method="post" action="<?php echo getTopicUrl($topic_id); ?>" id="reply-form">
                         <input type="hidden" name="reply_to" id="reply_to" value="">
                         
                         <div id="reply-to-info" class="alert alert-info d-none">
@@ -302,11 +317,12 @@ include __DIR__ . '/templates/header.php';
             </div>
         <?php else: ?>
             <div class="alert alert-info">
-                <a href="login.php">登录</a> 后才能回复
+                <a href="<?php echo getLoginUrl(); ?>">登录</a> 后才能回复
             </div>
         <?php endif; ?>
     <?php endif; ?>
 </div>
+<?php if (isset($_SESSION['user_id'])): ?>
 <!-- ice -->
 <script type="text/JavaScript" src="./assets/src/iceEditor.js"></script>
 <!-- 编辑器脚本 -->
@@ -317,6 +333,8 @@ ice.editor("content",function(e){
 	this.pasteText = false;
 	this.screenshot = true;
 	this.screenshotUpload = true;
+    this.height='100px'; //高度
+    this.create();
 	this.menu = [
 		'foreColor', 'bold', 'italic', 'underline', 'strikeThrough', 'line', 'justifyLeft',
 		'justifyCenter', 'justifyRight', 'indent', 'outdent', 'line', 'insertOrderedList', 'insertUnorderedList', 'line', 'hr', 'face', 'music', 'video', 'insertImage',
@@ -326,6 +344,7 @@ ice.editor("content",function(e){
 // 	this.setValue('Hi,My name is iceui。');
 })
 </script>
+<?php endif; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 回复功能
@@ -361,9 +380,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 删除确认对话框
+    const confirmButtons = document.querySelectorAll('.confirm-action');
+    confirmButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const confirmMessage = this.getAttribute('data-confirm-message') || '确定要执行此操作吗？';
+            
+            if (confirm(confirmMessage)) {
+                window.location.href = this.href;
+            }
+        });
+    });
+});
+</script>
 <?php
 // 加载页面底部
 include __DIR__ . '/templates/footer.php';
 ?>
-
