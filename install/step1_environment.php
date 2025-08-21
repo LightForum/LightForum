@@ -19,7 +19,7 @@ $extensions = [
 // 检查目录权限
 $directories = [
     '../config' => is_dir(__DIR__ . '/../config') && is_writable(__DIR__ . '/../config'),
-    '../uploads' => is_dir(__DIR__ . '/../uploads') && is_writable(__DIR__ . '/../uploads')
+    '../upload' => is_dir(__DIR__ . '/../upload') && is_writable(__DIR__ . '/../upload')
 ];
 
 // 检查是否所有条件都满足

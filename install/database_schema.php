@@ -23,6 +23,8 @@ function getDatabaseSchema($prefix = 'forum_') {
             `last_login` datetime DEFAULT NULL,
             `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
             `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `reset_token` varchar(255) DEFAULT NULL,
+            `reset_expires` datetime DEFAULT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `username` (`username`),
             UNIQUE KEY `email` (`email`)
@@ -97,7 +99,7 @@ function getDatabaseSchema($prefix = 'forum_') {
             PRIMARY KEY (`id`),
             UNIQUE KEY `setting_key` (`setting_key`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-        
+
         // 日志表
         "{$prefix}logs" => "CREATE TABLE IF NOT EXISTS `{$prefix}logs` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -115,7 +117,23 @@ function getDatabaseSchema($prefix = 'forum_') {
             KEY `target_type` (`target_type`),
             KEY `target_id` (`target_id`),
             KEY `created_at` (`created_at`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+
+        // 友链表
+        "{$prefix}links" => "CREATE TABLE `{$prefix}links` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(100) NOT NULL COMMENT '友链名称',
+            `url` varchar(255) NOT NULL COMMENT '友链URL',
+            `description` varchar(255) DEFAULT NULL COMMENT '友链描述',
+            `sort_order` int(11) DEFAULT 0 COMMENT '排序顺序，数字越小越靠前',
+            `status` tinyint(1) DEFAULT 1 COMMENT '状态：1=启用，0=禁用',
+            `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `name` (`name`),
+            KEY `status` (`status`),
+            KEY `sort_order` (`sort_order`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     ];
 }
 ?>

@@ -135,7 +135,7 @@ switch ($action) {
             
             // 获取日志类型列表
             $log_types = $db->fetchAll(
-                "SELECT DISTINCT `type` FROM `{$prefix}logs` ORDER BY `type` ASC"
+                "SELECT DISTINCT `target_type` FROM `{$prefix}logs` ORDER BY `target_type` ASC"
             );
         } catch (Exception $e) {
             $error = '获取系统日志失败: ' . $e->getMessage();
@@ -239,7 +239,7 @@ switch ($action) {
                                     <?php foreach ($logs as $log): ?>
                                         <tr>
                                             <td><?php echo $log['id']; ?></td>
-                                            <td><?php echo htmlspecialchars($log['type']); ?></td>
+                                            <td><?php echo $log['target_type']; ?></td>
                                             <td><?php echo htmlspecialchars($log['action']); ?></td>
                                             <td><?php echo $log['target_id']; ?></td>
                                             <td>

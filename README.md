@@ -29,7 +29,7 @@ LightForum 是一个简单易用的 PHP 论坛程序，适合小型社区和个�
 ## 目录结构
 
 ```
-/
+php_forum_v3/
 ├── admin/             # 管理后台
 ├── config/            # 配置文件
 ├── includes/          # 核心类和函数

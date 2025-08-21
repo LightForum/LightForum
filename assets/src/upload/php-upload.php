@@ -26,9 +26,40 @@ $http = (_isHttps() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
 
 // 绝对路径
 define('URL',$_SERVER['DOCUMENT_ROOT']);
+/**
+ * 动态确定上传目录
+ * 
+ * @return string 上传目录路径（相对于站点根目录）
+ */
+function getUploadDir() {
+    // 获取站点根目录
+    $siteRoot = dirname(__DIR__); // 根据实际情况可能需要调整层级
+    
+    // 构建上传目录（按日期组织）
+    $uploadDir = '/upload/files/' . date("Ymd") . '/';
+    
+    // 完整物理路径
+    $fullPath = $siteRoot . $uploadDir;
+    
+    // 确保目录存在
+    if (!is_dir($fullPath)) {
+        if (!mkdir($fullPath, 0755, true)) {
+            error_log("无法创建上传目录: " . $fullPath);
+            return false;
+        }
+    }
+    
+    // 设置适当的权限
+    chmod($fullPath, 0755);
+    
+    return $uploadDir;
+}
+
+// 在会话中设置上传路径
+$_SESSION['upload_path'] = getUploadDir();
 
 //上传目录
-$dir = isset($_SESSION['upload_path'])?$_SESSION['upload_path']:'/upload/files/'.date("Ymd").'/';
+$dir = isset($_SESSION['upload_path']) ? $_SESSION['upload_path'] : getUploadDir();
 
 //上传控件名称
 $field = 'file';
