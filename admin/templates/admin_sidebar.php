@@ -31,6 +31,12 @@
                     回复管理
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'links.php' ? 'active' : ''; ?>" href="links.php">
+                    <i class="bi bi-link me-1"></i>
+                    友链管理
+                </a>
+            </li>
         </ul>
         
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

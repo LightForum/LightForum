@@ -174,5 +174,25 @@ function generatePagination($current_page, $total_pages, $url_pattern) {
     
     return $html;
 }
+/**
+ * 获取所有启用的友链列表
+ * 
+ * @return array 友链列表数组
+ */
+function getActiveLinks() {
+    global $db, $prefix;
+    
+    try {
+        // 获取已启用的友链，按排序顺序排列
+        $links = $db->fetchAll(
+            "SELECT * FROM `{$prefix}links` WHERE `status` = 1 ORDER BY `sort_order` ASC, `id` ASC"
+        );
+        
+        return $links;
+    } catch (Exception $e) {
+        error_log('获取友链列表失败: ' . $e->getMessage());
+        return [];
+    }
+}
 ?>
 

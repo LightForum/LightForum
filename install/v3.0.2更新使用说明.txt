@@ -1,5 +1,5 @@
 全部覆盖根目录
 
-然后访问：域名/install/update_data.php
+然后访问：域名/install/v3.0.2-update_data.php
 
 最后访问：域名/admin  导航栏里邮箱配置，配置好邮箱就好了！

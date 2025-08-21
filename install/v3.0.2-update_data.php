@@ -14,7 +14,7 @@ require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 // 加载默认数据文件
-require_once __DIR__ . '/default_data.php';
+require_once __DIR__ . '/v3.0.2-default_data.php';
 
 // 获取数据库连接
 $db = Database::getInstance();

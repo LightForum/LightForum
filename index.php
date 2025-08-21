@@ -21,6 +21,24 @@ require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// 检查是否已登录
+if (isset($_SESSION['user_id'])) {
+    // 获取用户ID
+    $user_id = $_GET['id'] ?? $_SESSION['user_id'];
+    
+    // 获取用户信息
+    try {
+        $db = Database::getInstance();
+        $prefix = defined('DB_PREFIX') ? DB_PREFIX : 'forum_';
+        $user = $db->fetch(
+            "SELECT * FROM `{$prefix}users` WHERE `id` = :id",
+            ['id' => $user_id]
+        );
+    } catch (Exception $e) {
+        $error = '加载用户信息失败: ' . $e->getMessage();
+    }
+}
+
 // 加载页面头部
 include __DIR__ . '/templates/header.php';
 ?>
@@ -37,8 +55,22 @@ include __DIR__ . '/templates/header.php';
                     
                     <?php if (!isset($_SESSION['user_id'])): ?>
                         <div class="alert alert-info">
-                            <p>您尚未登录。请 <a href="login.php">登录</a> 或 <a href="register.php">注册</a> 以参与讨论。</p>
+                            您尚未登录。请 <a href="login.php">登录</a> 或 <a href="register.php">注册</a> 以参与讨论。
                         </div>
+                    <?php else: ?>
+                    <div class="alert alert-info">
+                        欢迎尊敬的
+                        <?php if ($user['role'] === 'admin'): ?>
+                            <span>管理员</span>
+                        <?php elseif ($user['role'] === 'moderator'): ?>
+                            <span>版主</span>
+                        <?php else: ?>
+                            <span>会员</span>
+                        <?php endif; ?>：
+                        <?php echo htmlspecialchars($user['username']); ?>
+                        <a href="new_topic.php" class="badge bg-warning">发表新主题</a>
+                        <a href="logout.php" class="badge bg-danger">退出</a>
+                    </div>
                     <?php endif; ?>
 
                     <div class="alert alert-info">
@@ -161,6 +193,28 @@ include __DIR__ . '/templates/header.php';
                     ?>
                 </div>
             </div>
+            <?php
+            // 获取启用的友链列表
+            $links = getActiveLinks();
+            if (!empty($links)): ?>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>友情链接</h5>
+                </div>
+                <div class="card-body">
+                    <?php foreach ($links as $link): ?>
+                        <div class="links">
+                            <a href="<?php echo $link['url']; ?>" target="_blank" class="d-block link-item">
+                                <span class="badge bg-primary text-white"><?php echo htmlspecialchars($link['name']); ?></span>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <style>
+                    .links a {margin-right: 4px;float: left;}
+                </style>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
