@@ -203,7 +203,7 @@ include __DIR__ . '/templates/header.php';
                 </div>
                 <div class="card-body">
                     <div class="topic-content">
-                        <?php echo nl2br(htmlspecialchars($topic['content'])); ?>
+                        <?php echo nl2br($topic['content']); ?>
                     </div>
                 </div>
             </div>
@@ -225,9 +225,6 @@ include __DIR__ . '/templates/header.php';
                         <div>
                             <?php if (isset($_SESSION['user_id'])): ?>
                                 <button class="btn btn-sm btn-outline-secondary reply-btn" data-post-id="<?php echo $post['id']; ?>" data-username="<?php echo htmlspecialchars($post['username']); ?>">回复</button>
-                                <?php if ($_SESSION['user_id'] == $post['user_id'] || $_SESSION['role'] == 'admin'): ?>
-                                    <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="btn btn-sm btn-outline-primary">编辑</a>
-                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -253,7 +250,7 @@ include __DIR__ . '/templates/header.php';
                         <?php endif; ?>
                         
                         <div class="post-content">
-                            <?php echo nl2br(htmlspecialchars($post['content'])); ?>
+                            <?php echo nl2br($post['content']); ?>
                         </div>
                     </div>
                 </div>
@@ -310,7 +307,25 @@ include __DIR__ . '/templates/header.php';
         <?php endif; ?>
     <?php endif; ?>
 </div>
-
+<!-- ice -->
+<script type="text/JavaScript" src="./assets/src/iceEditor.js"></script>
+<!-- 编辑器脚本 -->
+<script>
+ //自定义编辑器菜单
+ice.editor("content",function(e){
+	this.uploadUrl = "assets/src/upload/php-upload.php";
+	this.pasteText = false;
+	this.screenshot = true;
+	this.screenshotUpload = true;
+	this.menu = [
+		'foreColor', 'bold', 'italic', 'underline', 'strikeThrough', 'line', 'justifyLeft',
+		'justifyCenter', 'justifyRight', 'indent', 'outdent', 'line', 'insertOrderedList', 'insertUnorderedList', 'line', 'hr', 'face', 'music', 'video', 'insertImage',
+		'removeFormat', 'paste', 'line', 'code'
+	];
+	this.create();
+// 	this.setValue('Hi,My name is iceui。');
+})
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 回复功能

@@ -119,7 +119,6 @@ $page_title = '发布新主题';
 // 加载页面头部
 include __DIR__ . '/templates/header.php';
 ?>
-
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>发布新主题</h1>
@@ -140,51 +139,57 @@ include __DIR__ . '/templates/header.php';
     </div>
     
     <div class="card">
-        <div class="card-header">
-            <h5>发布新主题</h5>
-        </div>
-        <div class="card-body">
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger"><?php echo $error; ?></div>
-            <?php endif; ?>
-            
-            <?php if (!empty($success)): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
-            <?php endif; ?>
-            
-            <form method="post" action="new_topic.php">
-                <div class="mb-3">
-                    <label for="category_id" class="form-label">选择分类</label>
-                    <select class="form-select" id="category_id" name="category_id" required>
-                        <option value="">-- 请选择分类 --</option>
-                        <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo $category['id']; ?>" <?php echo $category_id == $category['id'] ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($category['title']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="title" class="form-label">主题标题</label>
-                    <input type="text" class="form-control" id="title" name="title" required minlength="5" maxlength="100" value="<?php echo isset($_POST['title']) ? htmlspecialchars($_POST['title']) : ''; ?>">
-                    <div class="form-text">标题长度必须在5-100个字符之间</div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="content" class="form-label">主题内容</label>
-                    <textarea class="form-control" id="content" name="content" rows="10" required minlength="10"><?php echo isset($_POST['content']) ? htmlspecialchars($_POST['content']) : ''; ?></textarea>
-                    <div class="form-text">内容长度必须至少为10个字符</div>
-                </div>
-                
-                <div class="d-grid gap-2">
+            <div class="card-body">
+                <form method="post" action="new_topic.php">
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">选择分类</label>
+                        <select class="form-select" id="category_id" name="category_id" required>
+                            <option value="">-- 请选择分类 --</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['id']; ?>" <?php echo $category_id == $category['id'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($category['title']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label">主题标题</label>
+                        <input type="text" class="form-control" id="title" name="title" value="<?php echo isset($_POST['title']) ? htmlspecialchars($_POST['title']) : ''; ?>" required minlength="3" maxlength="100">
+                        <div class="form-text">标题长度在3-100个字符之间</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">主题内容</label>
+                        <textarea class="form-control rich-editor" id="content" name="content" rows="10" required minlength="10"><?php echo isset($_POST['content']) ? htmlspecialchars($_POST['content']) : ''; ?></textarea>
+                        <div class="form-text">内容长度至少10个字符</div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary">发布主题</button>
-                </div>
-            </form>
+                    <a href="index.php" class="btn btn-secondary">取消</a>
+                </form>
+            </div>
         </div>
-    </div>
 </div>
-
+<!-- ice -->
+<script type="text/JavaScript" src="./assets/src/iceEditor.js"></script>
+<!-- 编辑器脚本 -->
+<script>
+ //自定义编辑器菜单
+ice.editor("content",function(e){
+	this.uploadUrl = "assets/src/upload/php-upload.php";
+	this.pasteText = false;
+	this.screenshot = true;
+	this.screenshotUpload = true;
+	this.menu = [
+		'backColor', 'fontSize', 'foreColor', 'bold', 'italic', 'underline', 'strikeThrough', 'line', 'justifyLeft',
+		'justifyCenter', 'justifyRight', 'indent', 'outdent', 'line', 'insertOrderedList', 'insertUnorderedList', 'line', 'createLink', 'unlink', 'line', 'hr', 'face', 'table', 'files', 'music', 'video', 'insertImage',
+		'removeFormat', 'paste', 'line', 'code'
+	];
+	this.create();
+// 	this.setValue('Hi,My name is iceui。');
+})
+</script>
 <?php
 // 加载页面底部
 include __DIR__ . '/templates/footer.php';
