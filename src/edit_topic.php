@@ -2,20 +2,7 @@
 /**
  * 编辑主题页面
  */
-
-// 启动会话
-session_start();
-
-// 设置错误报告
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// 检查是否已安装
-if (!file_exists(__DIR__ . '/config/config.php')) {
-    header('Location: install/index.php');
-    exit;
-}
-
+require_once __DIR__ . '/includes/common.php';
 // 检查是否已登录
 if (!isset($_SESSION['user_id'])) {
     header('Location: ' . getLoginUrl());

@@ -2,21 +2,8 @@
 /**
  * 首页 - 支持伪静态URL
  */
-
-// 启动会话
-session_start();
-
-// 设置错误报告
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// 检查是否已安装
-if (!file_exists(__DIR__ . '/config/config.php')) {
-    header('Location: install/index.php');
-    exit;
-}
-
 // 加载配置和函数
+require_once __DIR__ . '/includes/common.php';
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -118,7 +105,7 @@ include __DIR__ . '/templates/header.php';
                         </div>
                     <?php endif; ?>
                     <div class="alert alert-info">
-                        季伯家族站点：<a href="https://ikunwl.com">iKun外链</a> | <a href="http://bbs.8w.gs">云梦社区</a> 欢迎宝子们光临~
+                        系列站点：<a href="http://free.uiisc.org" target="_blank">免费空间</a> | <a href="http://doghost.cc/zh-cn/" target="_blank">狗狗主机</a> 欢迎宝子们光临~
                     </div>
                 </div>
             </div>

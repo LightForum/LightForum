@@ -2,15 +2,8 @@
 /**
  * 退出登录页面 - 支持伪静态URL
  */
-
-// 启动会话
-session_start();
-
-// 设置错误报告
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // 加载配置和函数
+require_once __DIR__ . '/includes/common.php';
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/functions.php';

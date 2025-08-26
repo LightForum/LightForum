@@ -1,43 +1,47 @@
-# PHP轻论坛 v3.0 .htaccess 文件
+# 轻论坛 .htaccess 文件
 # 伪静态规则
+<IfModule mod_rewrite.c>
+    # 启用重写引擎
+    RewriteEngine On
+    RewriteBase /
 
-# 启用重写引擎
-RewriteEngine On
+    # 设置基础路径（如果论坛不在网站根目录，请修改此项）
+    # RewriteBase /forum/
 
-# 设置基础路径（如果论坛不在网站根目录，请修改此项）
-# RewriteBase /forum/
+    # 如果请求的是真实存在的文件或目录，则直接访问
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-# 如果请求的是真实存在的文件或目录，则直接访问
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+    # 主题页面伪静态规则
+    RewriteRule ^topic-([0-9]+)(-.*)?\.html$ topic.php?id=$1 [L,QSA]
 
-# 主题页面伪静态规则
-RewriteRule ^topic-([0-9]+)(-.*)?\.html$ topic.php?id=$1 [L,QSA]
+    # 分类页面伪静态规则
+    RewriteRule ^category-([0-9]+)(-.*)?\.html$ category.php?id=$1 [L,QSA]
 
-# 分类页面伪静态规则
-RewriteRule ^category-([0-9]+)(-.*)?\.html$ category.php?id=$1 [L,QSA]
+    # 用户资料页面伪静态规则
+    RewriteRule ^user-([0-9]+)(-.*)?\.html$ profile.php?id=$1 [L,QSA]
 
-# 用户资料页面伪静态规则
-RewriteRule ^user-([0-9]+)(-.*)?\.html$ profile.php?id=$1 [L,QSA]
+    # 分页伪静态规则
+    RewriteRule ^page-([0-9]+)\.html$ index.php?page=$1 [L,QSA]
+    RewriteRule ^category-([0-9]+)-page-([0-9]+)\.html$ category.php?id=$1&page=$2 [L,QSA]
+    RewriteRule ^topic-([0-9]+)-page-([0-9]+)\.html$ topic.php?id=$1&page=$2 [L,QSA]
 
-# 分页伪静态规则
-RewriteRule ^page-([0-9]+)\.html$ index.php?page=$1 [L,QSA]
-RewriteRule ^category-([0-9]+)-page-([0-9]+)\.html$ category.php?id=$1&page=$2 [L,QSA]
-RewriteRule ^topic-([0-9]+)-page-([0-9]+)\.html$ topic.php?id=$1&page=$2 [L,QSA]
+    # 其他页面伪静态规则
+    RewriteRule ^login\.html$ login.php [L,QSA]
+    RewriteRule ^register\.html$ register.php [L,QSA]
+    RewriteRule ^logout\.html$ logout.php [L,QSA]
+    RewriteRule ^search\.html$ search.php [L,QSA]
+    RewriteRule ^new-topic\.html$ new_topic.php [L,QSA]
+    RewriteRule ^edit-topic\.html$ edit_topic.php [L,QSA]
+    RewriteRule ^categories\.html$ categories.php [L,QSA]
 
-# 其他页面伪静态规则
-RewriteRule ^login\.html$ login.php [L,QSA]
-RewriteRule ^register\.html$ register.php [L,QSA]
-RewriteRule ^logout\.html$ logout.php [L,QSA]
-RewriteRule ^search\.html$ search.php [L,QSA]
-RewriteRule ^new-topic\.html$ new_topic.php [L,QSA]
-RewriteRule ^categories\.html$ categories.php [L,QSA]
+    # 防止直接访问PHP文件
+    # 注意：如果启用此规则，需要确保所有PHP文件都有对应的伪静态规则
+    # RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*\.php
+    # RewriteRule ^(.*)\.php$ /$1.html [R=301,L]
 
-# 防止直接访问PHP文件
-# 注意：如果启用此规则，需要确保所有PHP文件都有对应的伪静态规则
-# RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*\.php
-# RewriteRule ^(.*)\.php$ /$1.html [R=301,L]
+</IfModule>
 
 # 错误页面
 ErrorDocument 404 /404.html

@@ -3,20 +3,8 @@
  * 回复管理页面
  */
 
-// 启动会话
-session_start();
-
-// 设置错误报告
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// 检查是否已安装
-if (!file_exists(__DIR__ . '/../config/config.php')) {
-    header('Location: ../install/index.php');
-    exit;
-}
-
 // 加载配置和函数
+require_once __DIR__ . '/../includes/common.php';
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/functions.php';
