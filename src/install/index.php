@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
         case 3:
             // 处理系统设置
-            $site_name = $_POST['site_name'] ?? 'PHP轻论坛';
+            $site_name = $_POST['site_name'] ?? '轻论坛';
             $site_description = $_POST['site_description'] ?? '一个简单易用的PHP论坛程序';
             $admin_username = $_POST['admin_username'] ?? '';
             $admin_password = $_POST['admin_password'] ?? '';
@@ -209,8 +209,8 @@ function showHeader($title) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><?php echo $title; ?> - PHP轻论坛安装向导</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title><?php echo $title; ?> - 轻论坛安装向导</title>
+        <link href="https://static.doucdn.org/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
                 background-color: #f8f9fa;
@@ -274,7 +274,7 @@ function showHeader($title) {
         <div class="container">
             <div class="install-container">
                 <div class="install-header">
-                    <h1>PHP轻论坛安装向导</h1>
+                    <h1>轻论坛安装向导</h1>
                     <p class="text-muted">简单易用的PHP论坛程序</p>
                 </div>
     <?php
@@ -285,7 +285,7 @@ function showFooter() {
     ?>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://static.doucdn.org/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>
     <?php

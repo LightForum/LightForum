@@ -5,7 +5,7 @@
  */
 
 // 获取之前保存的系统设置（如果有）
-$site_name = $_SESSION['site_name'] ?? 'PHP轻论坛';
+$site_name = $_SESSION['site_name'] ?? '轻论坛';
 $site_description = $_SESSION['site_description'] ?? '一个简单易用的PHP论坛程序';
 $admin_username = $_SESSION['admin_username'] ?? '';
 $admin_password = $_SESSION['admin_password'] ?? '';

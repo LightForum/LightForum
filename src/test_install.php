@@ -8,7 +8,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-echo "=== PHP轻论坛 v3.0 安装测试 ===\n\n";
+echo "=== 轻论坛 v3.0 安装测试 ===\n\n";
 
 // 测试数据库连接和SQL语句
 try {
@@ -33,7 +33,7 @@ try {
     
     echo "3. 测试插入设置...\n";
     $settings = [
-        ['setting_key' => 'site_name', 'setting_value' => 'PHP轻论坛', 'setting_type' => 'string', 'description' => '网站名称'],
+        ['setting_key' => 'site_name', 'setting_value' => '轻论坛', 'setting_type' => 'string', 'description' => '网站名称'],
         ['setting_key' => 'site_description', 'setting_value' => '一个简单易用的PHP论坛程序', 'setting_type' => 'string', 'description' => '网站描述'],
         ['setting_key' => 'allow_registration', 'setting_value' => '1', 'setting_type' => 'bool', 'description' => '是否允许用户注册']
     ];
@@ -61,7 +61,7 @@ try {
     
     echo "5. 测试更新设置...\n";
     $stmt = $pdo->prepare("UPDATE `forum_settings` SET `setting_value` = ? WHERE `setting_key` = ?");
-    $result = $stmt->execute(['PHP轻论坛测试版', 'site_name']);
+    $result = $stmt->execute(['轻论坛测试版', 'site_name']);
     
     if ($result) {
         echo "✅ 设置更新成功\n\n";
@@ -75,14 +75,14 @@ try {
     $value = $stmt->fetchColumn();
     echo "更新后的值: $value\n";
     
-    if ($value === 'PHP轻论坛测试版') {
+    if ($value === '轻论坛测试版') {
         echo "✅ 更新验证成功\n\n";
     } else {
         echo "❌ 更新验证失败\n\n";
     }
     
     echo "7. 测试系统配置步骤...\n";
-    $site_name = 'PHP轻论坛 v3.0';
+    $site_name = '轻论坛 v3.0';
     $site_description = '完全重构版';
     
     // 更新系统设置

@@ -1,5 +1,5 @@
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://static.doucdn.org/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     
     <!-- 自定义脚本 -->
     <script>

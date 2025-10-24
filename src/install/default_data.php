@@ -15,13 +15,13 @@ function getDefaultData($prefix = 'forum_') {
         "{$prefix}settings" => [
             [
                 'setting_key' => 'site_name',
-                'setting_value' => 'PHP轻论坛',
+                'setting_value' => '轻论坛',
                 'setting_type' => 'string',
                 'description' => '网站名称'
             ],
             [
                 'setting_key' => 'site_title',
-                'setting_value' => 'PHP轻论坛',
+                'setting_value' => '轻论坛',
                 'setting_type' => 'string',
                 'description' => '首页标题'
             ],

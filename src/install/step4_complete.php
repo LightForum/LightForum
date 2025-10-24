@@ -6,7 +6,7 @@
 // 获取安装信息
 $db_name = $_SESSION['db_name'] ?? '';
 $db_prefix = $_SESSION['db_prefix'] ?? 'forum_';
-$site_name = $_SESSION['site_name'] ?? 'PHP轻论坛';
+$site_name = $_SESSION['site_name'] ?? '轻论坛';
 
 // 清除安装会话数据
 $_SESSION = [];
@@ -20,7 +20,7 @@ $_SESSION = [];
         </svg>
     </div>
     <h2>安装成功！</h2>
-    <p class="lead">恭喜您，PHP轻论坛已成功安装。</p>
+    <p class="lead">恭喜您，轻论坛已成功安装。</p>
 </div>
 
 <div class="alert alert-info">

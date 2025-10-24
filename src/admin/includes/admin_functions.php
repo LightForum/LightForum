@@ -177,7 +177,7 @@ function backupDatabase() {
         // 获取所有表
         $tables = $db->fetchAll("SHOW TABLES LIKE '{$prefix}%'");
         
-        $backup = "-- PHP轻论坛数据库备份\n";
+        $backup = "-- 轻论坛数据库备份\n";
         $backup .= "-- 生成时间: " . date('Y-m-d H:i:s') . "\n";
         $backup .= "-- 版本: " . getSetting('forum_version', '3.0.0') . "\n\n";
         

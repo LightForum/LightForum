@@ -16,12 +16,11 @@ try {
     
     // 获取所有分类
     $categories = $db->fetchAll("SELECT * FROM `{$prefix}categories` ORDER BY `sort_order` ASC");
-    
     // 获取每个分类的主题数量
-    foreach ($categories as &$category) {
-        $category['topic_count'] = $db->fetchColumn(
+    foreach ($categories as &$_category) {
+        $_category['topic_count'] = $db->fetchColumn(
             "SELECT COUNT(*) FROM `{$prefix}topics` WHERE `category_id` = :category_id AND `status` = 'published'",
-            ['category_id' => $category['id']]
+            ['category_id' => $_category['id']]
         );
         
         // 获取最新主题
@@ -30,11 +29,12 @@ try {
             JOIN `{$prefix}users` u ON t.user_id = u.id 
             WHERE t.category_id = :category_id AND t.status = 'published' 
             ORDER BY t.created_at DESC LIMIT 1",
-            ['category_id' => $category['id']]
+            ['category_id' => $_category['id']]
         );
         
-        $category['latest_topic'] = $latest_topic;
+        $_category['latest_topic'] = $latest_topic;
     }
+    // print_r($categories);exit;
     
 } catch (Exception $e) {
     $error = '加载分类列表失败: ' . $e->getMessage();

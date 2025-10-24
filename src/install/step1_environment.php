@@ -27,7 +27,7 @@ $all_requirements_met = $php_version_ok && !in_array(false, $extensions) && !in_
 ?>
 
 <h2>环境检测</h2>
-<p class="text-muted">安装程序将检查您的服务器环境是否满足运行PHP轻论坛的要求。</p>
+<p class="text-muted">安装程序将检查您的服务器环境是否满足运行轻论坛的要求。</p>
 
 <div class="card mb-4">
     <div class="card-header">

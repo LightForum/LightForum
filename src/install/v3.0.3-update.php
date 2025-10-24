@@ -61,7 +61,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>友链管理系统升级</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://static.doucdn.org/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;

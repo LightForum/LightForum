@@ -83,7 +83,7 @@ try {
 }
 
 // 设置页面标题
-$page_title = getSetting('site_title', 'PHP轻论坛') . ($page > 1 ? ' - 第' . $page . '页' : '');
+$page_title = getSetting('site_title', '轻论坛') . ($page > 1 ? ' - 第' . $page . '页' : '');
 
 // 加载页面头部
 include __DIR__ . '/templates/header.php';
@@ -94,7 +94,7 @@ include __DIR__ . '/templates/header.php';
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    欢迎来到 <?php echo htmlspecialchars(getSetting('site_name', 'PHP轻论坛')); ?>
+                    欢迎来到 <?php echo htmlspecialchars(getSetting('site_name', '轻论坛')); ?>
                 </div>
                 <div class="card-body">
                     <p><?php echo htmlspecialchars(getSetting('site_description', '一个简单易用的PHP论坛程序')); ?></p>

@@ -1,5 +1,5 @@
 /**
- * PHP轻论坛 v3.0 JavaScript
+ * 轻论坛 v3.0 JavaScript
  */
 
 document.addEventListener('DOMContentLoaded', function() {

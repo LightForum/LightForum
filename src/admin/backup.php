@@ -55,7 +55,7 @@ switch ($action) {
             }
             
             // 写入备份文件头
-            fwrite($fp, "-- PHP轻论坛数据库备份\n");
+            fwrite($fp, "-- 轻论坛数据库备份\n");
             fwrite($fp, "-- 创建时间: " . date('Y-m-d H:i:s') . "\n");
             fwrite($fp, "-- 版本: " . getSetting('forum_version', '1.0.0') . "\n");
             fwrite($fp, "-- -------------------------------------------------------\n\n");
