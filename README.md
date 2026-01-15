@@ -14,11 +14,11 @@ LightForum 是一个简单易用的 PHP 论坛程序，适合小型社区和个�
 
 ## 功能预览
 
-演示地址：https://250sb.cn
+演示地址：[lightforum.uiisc.com](http://lightforum.uiisc.com)
 
 预览截图：
 
-![LightForum 预览截图](assets/1750258980.jpeg)
+![LightForum 预览截图](assets/screenshot-home.png)
 
 ## 系统要求
 
