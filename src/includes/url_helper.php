@@ -1,4 +1,5 @@
 <?php
+
 /**
  * URL助手函数库 - 用于生成和解析伪静态URL
  * 
@@ -6,29 +7,37 @@
  * 所有页面链接应统一通过此文件中的函数生成，确保全站URL风格一致
  */
 
+
+if (getSetting('site_domain', false)) {
+    define('SITE_DOMAIN', getSetting('site_domain'));
+}
+
 /**
  * 获取网站根URL
  */
-function getBaseUrl() {
+function getBaseUrl()
+{
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $host = $_SERVER['HTTP_HOST'];
+    $host = defined('SITE_DOMAIN') ? SITE_DOMAIN : $_SERVER['HTTP_HOST'];
     $path = dirname($_SERVER['SCRIPT_NAME']);
     $path = $path === '/' ? '' : $path;
-    
+
     return $protocol . $host . $path;
 }
 
 /**
  * 获取首页URL
  */
-function getHomeUrl() {
+function getHomeUrl()
+{
     return getBaseUrl() . '/';
 }
 
 /**
  * 获取首页分页URL
  */
-function getHomePageUrl($page = 1) {
+function getHomePageUrl($page = 1)
+{
     if ($page <= 1) {
         return getHomeUrl();
     }
@@ -38,7 +47,8 @@ function getHomePageUrl($page = 1) {
 /**
  * 获取主题页URL
  */
-function getTopicUrl($id, $page = null, $title = '') {
+function getTopicUrl($id, $page = null, $title = '')
+{
     if ($page && $page > 1) {
         return getBaseUrl() . '/topic-' . $id . '-page-' . $page . '.html';
     }
@@ -48,14 +58,16 @@ function getTopicUrl($id, $page = null, $title = '') {
 /**
  * 获取编辑主题URL
  */
-function getEditTopicUrl($id) {
+function getEditTopicUrl($id)
+{
     return getBaseUrl() . '/edit-topic-' . $id . '.html';
 }
 
 /**
  * 获取分类页URL
  */
-function getCategoryUrl($id, $page = null, $title = '') {
+function getCategoryUrl($id, $page = null, $title = '')
+{
     if ($page && $page > 1) {
         return getBaseUrl() . '/category-' . $id . '-page-' . $page . '.html';
     }
@@ -65,23 +77,26 @@ function getCategoryUrl($id, $page = null, $title = '') {
 /**
  * 获取分类列表页URL
  */
-function getCategoriesUrl() {
+function getCategoriesUrl()
+{
     return getBaseUrl() . '/categories.html';
 }
 
 /**
  * 获取用户资料页URL
  */
-function getUserProfileUrl($id, $username = '') {
+function getUserProfileUrl($id, $username = '')
+{
     return getBaseUrl() . '/user-' . $id . '.html';
 }
 
 /**
  * 获取搜索页URL
  */
-function getSearchUrl($query = null, $page = null) {
+function getSearchUrl($query = null, $page = null)
+{
     $url = getBaseUrl() . '/search.html';
-    
+
     if ($query) {
         $url .= '?q=' . urlencode($query);
         if ($page && $page > 1) {
@@ -89,18 +104,19 @@ function getSearchUrl($query = null, $page = null) {
         }
         return $url;
     }
-    
+
     if ($page && $page > 1) {
         return getBaseUrl() . '/search-page-' . $page . '.html';
     }
-    
+
     return $url;
 }
 
 /**
  * 获取登录页URL
  */
-function getLoginUrl($redirect = null) {
+function getLoginUrl($redirect = null)
+{
     $url = getBaseUrl() . '/login.html';
     if ($redirect) {
         $url .= '?redirect=' . urlencode($redirect);
@@ -111,28 +127,32 @@ function getLoginUrl($redirect = null) {
 /**
  * 获取注册页URL
  */
-function getRegisterUrl() {
+function getRegisterUrl()
+{
     return getBaseUrl() . '/register.html';
 }
 
 /**
  * 获取忘记密码页URL
  */
-function getForgotPasswordUrl() {
+function getForgotPasswordUrl()
+{
     return getBaseUrl() . '/forgot-password.html';
 }
 
 /**
  * 获取重置密码页URL
  */
-function getResetPasswordUrl($token) {
+function getResetPasswordUrl($token)
+{
     return getBaseUrl() . '/reset-password/' . $token . '.html';
 }
 
 /**
  * 获取新主题页URL
  */
-function getNewTopicUrl($category_id = null) {
+function getNewTopicUrl($category_id = null)
+{
     if ($category_id) {
         return getBaseUrl() . '/new-topic-in-' . $category_id . '.html';
     }
@@ -142,14 +162,16 @@ function getNewTopicUrl($category_id = null) {
 /**
  * 获取退出登录URL
  */
-function getLogoutUrl() {
+function getLogoutUrl()
+{
     return getBaseUrl() . '/logout.html';
 }
 
 /**
  * 获取后台首页URL
  */
-function getAdminUrl() {
+function getAdminUrl()
+{
     return getBaseUrl() . '/admin/';
 }
 
@@ -160,7 +182,8 @@ function getAdminUrl() {
  * @param array $params 参数数组
  * @return string 分页URL模式
  */
-function getPaginationUrlPattern($page_name, $params = []) {
+function getPaginationUrlPattern($page_name, $params = [])
+{
     if ($page_name === 'index.php') {
         return getBaseUrl() . '/page-%d.html';
     } else if ($page_name === 'topic.php' && isset($params['id'])) {
@@ -173,17 +196,17 @@ function getPaginationUrlPattern($page_name, $params = []) {
         }
         return getBaseUrl() . '/search-page-%d.html';
     }
-    
+
     // 默认情况，添加page参数
     $url = getBaseUrl() . '/' . $page_name . '?page=%d';
-    
+
     // 添加其他参数
     foreach ($params as $key => $value) {
         if ($key !== 'page') {
             $url .= '&' . $key . '=' . urlencode($value);
         }
     }
-    
+
     return $url;
 }
 
@@ -192,16 +215,17 @@ function getPaginationUrlPattern($page_name, $params = []) {
  * 
  * @return array 解析后的参数数组
  */
-function parseRewriteUrl() {
+function parseRewriteUrl()
+{
     $request_uri = $_SERVER['REQUEST_URI'];
     $params = [];
-    
+
     // 解析首页分页
     if (preg_match('/^\/page-([0-9]+)\.html/', $request_uri, $matches)) {
         $_GET['page'] = $matches[1];
         return ['page' => 'index.php'];
     }
-    
+
     // 解析主题页
     if (preg_match('/^\/topic-([0-9]+)(-page-([0-9]+))?\.html/', $request_uri, $matches)) {
         $_GET['id'] = $matches[1];
@@ -210,13 +234,13 @@ function parseRewriteUrl() {
         }
         return ['page' => 'topic.php'];
     }
-    
+
     // 解析编辑主题页
     if (preg_match('/^\/edit-topic-([0-9]+)\.html/', $request_uri, $matches)) {
         $_GET['id'] = $matches[1];
         return ['page' => 'edit_topic.php'];
     }
-    
+
     // 解析分类页
     if (preg_match('/^\/category-([0-9]+)(-page-([0-9]+))?\.html/', $request_uri, $matches)) {
         $_GET['id'] = $matches[1];
@@ -225,18 +249,18 @@ function parseRewriteUrl() {
         }
         return ['page' => 'category.php'];
     }
-    
+
     // 解析分类列表页
     if (preg_match('/^\/categories\.html/', $request_uri)) {
         return ['page' => 'categories.php'];
     }
-    
+
     // 解析用户资料页
     if (preg_match('/^\/user-([0-9]+)\.html/', $request_uri, $matches)) {
         $_GET['id'] = $matches[1];
         return ['page' => 'profile.php'];
     }
-    
+
     // 解析搜索页
     if (preg_match('/^\/search(-page-([0-9]+))?\.html/', $request_uri, $matches)) {
         if (isset($matches[2])) {
@@ -244,28 +268,28 @@ function parseRewriteUrl() {
         }
         return ['page' => 'search.php'];
     }
-    
+
     // 解析登录页
     if (preg_match('/^\/login\.html/', $request_uri)) {
         return ['page' => 'login.php'];
     }
-    
+
     // 解析注册页
     if (preg_match('/^\/register\.html/', $request_uri)) {
         return ['page' => 'register.php'];
     }
-    
+
     // 解析忘记密码页
     if (preg_match('/^\/forgot-password\.html/', $request_uri)) {
         return ['page' => 'forgot_password.php'];
     }
-    
+
     // 解析重置密码页
     if (preg_match('/^\/reset-password\/([a-zA-Z0-9]+)\.html/', $request_uri, $matches)) {
         $_GET['token'] = $matches[1];
         return ['page' => 'reset_password.php'];
     }
-    
+
     // 解析新主题页
     if (preg_match('/^\/new-topic(-in-([0-9]+))?\.html/', $request_uri, $matches)) {
         if (isset($matches[2])) {
@@ -273,13 +297,12 @@ function parseRewriteUrl() {
         }
         return ['page' => 'new_topic.php'];
     }
-    
+
     // 解析退出登录页
     if (preg_match('/^\/logout\.html/', $request_uri)) {
         return ['page' => 'logout.php'];
     }
-    
+
     // 默认返回首页
     return ['page' => 'index.php'];
 }
-?>

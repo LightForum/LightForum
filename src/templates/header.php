@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?><?php echo htmlspecialchars(getSetting('site_name', '轻论坛')); ?></title>
+    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?><?php echo getSetting('site_name', '轻论坛'); ?></title>
     <link href="https://static.doucdn.org/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://static.doucdn.org/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
     <style>
@@ -30,7 +30,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="<?php echo getHomeUrl(); ?>"><?php echo htmlspecialchars(getSetting('site_name', '轻论坛')); ?></a>
+            <a class="navbar-brand" href="<?php echo getHomeUrl(); ?>"><?php echo getSetting('site_name', '轻论坛'); ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

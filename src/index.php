@@ -2,17 +2,14 @@
 /**
  * 首页 - 支持伪静态URL
  */
-// 加载配置和函数
+// 加载系统
 require_once __DIR__ . '/includes/common.php';
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/database.php';
-require_once __DIR__ . '/includes/functions.php';
 
 // 检查是否已登录
 if (isset($_SESSION['user_id'])) {
     // 获取用户ID
     $user_id = $_GET['id'] ?? $_SESSION['user_id'];
-    
+
     // 获取用户信息（包含email字段）
     try {
         $db = Database::getInstance();
@@ -94,10 +91,10 @@ include __DIR__ . '/templates/header.php';
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    欢迎来到 <?php echo htmlspecialchars(getSetting('site_name', '轻论坛')); ?>
+                    欢迎来到 <?php echo getSetting('site_name', '轻论坛'); ?>
                 </div>
                 <div class="card-body">
-                    <p><?php echo htmlspecialchars(getSetting('site_description', '一个简单易用的PHP论坛程序')); ?></p>
+                    <p><?php echo getSetting('site_description', '一个简单易用的PHP论坛程序'); ?></p>
                     
                     <?php if (!isset($_SESSION['user_id'])): ?>
                         <div class="alert alert-info">
@@ -236,7 +233,7 @@ include __DIR__ . '/templates/header.php';
                 echo '<div class="card mb-4">';
                 echo '<div class="card-header d-flex justify-content-between align-items-center">';
                 echo '<h5>' . htmlspecialchars($category['title']) . '</h5>';
-                echo '<a href="category.php?id=' . $category['id'] . '" class="btn btn-sm btn-primary">查看全部</a>';
+                echo '<a href="' . getCategoryUrl($category['id']) . '" class="btn btn-sm btn-primary">查看全部</a>';
                 echo '</div>';
                 
                 echo '<div class="card-body">';
@@ -252,11 +249,11 @@ include __DIR__ . '/templates/header.php';
                     LIMIT 6",
                     ['category_id' => $category['id']]
                 );
-                
+
                 if (count($topics) > 0) {
                     echo '<div class="list-group">';
                     foreach ($topics as $topic) {
-                        echo '<a href="topic.php?id=' . $topic['id'] . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">';
+                        echo '<a href="' . getTopicUrl($topic['id']) . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">';
                         echo '<div style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">';
                         if ($topic['is_sticky']) {
                             echo '<span class="badge bg-danger me-2">置顶</span>';

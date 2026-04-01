@@ -2,11 +2,8 @@
 /**
  * 搜索页面
  */
+// 加载系统
 require_once __DIR__ . '/includes/common.php';
-// 加载配置和函数
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/database.php';
-require_once __DIR__ . '/includes/functions.php';
 
 // 获取搜索参数
 $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';

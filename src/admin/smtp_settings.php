@@ -5,9 +5,6 @@
 
 // 加载配置和函数
 require_once __DIR__ . '/../includes/common.php';
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../includes/database.php';
-require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/smtp.php';
 require_once __DIR__ . '/includes/admin_functions.php';
 

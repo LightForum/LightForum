@@ -32,6 +32,7 @@
     RewriteRule ^register\.html$ register.php [L,QSA]
     RewriteRule ^logout\.html$ logout.php [L,QSA]
     RewriteRule ^search\.html$ search.php [L,QSA]
+    RewriteRule ^forgot-password\.html$ forgot_password.php [L,QSA]
     RewriteRule ^new-topic\.html$ new_topic.php [L,QSA]
     RewriteRule ^new-topic-in-([0-9]+)(-.*)?\.html$ new_topic.php?category_id=$1 [L,QSA]
     RewriteRule ^edit-topic\.html$ edit_topic.php [L,QSA]

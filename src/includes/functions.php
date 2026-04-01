@@ -1,17 +1,15 @@
 <?php
+
 /**
- * 公共函数库 - 完全重构版
+ * 公共函数库
  * 避免使用MySQL保留字，确保SQL语句安全
  */
-
-// 加载URL助手函数
-require_once __DIR__ . '/url_helper.php';
-require_once __DIR__ . '/pagination_helper.php';
 
 /**
  * 获取带前缀的表名
  */
-function table($name) {
+function getTableName($name)
+{
     $prefix = defined('DB_PREFIX') ? DB_PREFIX : 'forum_';
     return $prefix . $name;
 }
@@ -19,16 +17,17 @@ function table($name) {
 /**
  * 获取系统设置
  */
-function getSetting($key, $default = null) {
+function getSetting($key, $default = null)
+{
     static $settings = null;
 
     if ($settings === null) {
         try {
             $db = Database::getInstance();
-            $result = $db->fetchAll("SELECT `setting_key`, `setting_value` FROM `" . table('settings') . "`");
+            $result = $db->fetchAll("SELECT `setting_key`, `setting_value` FROM `" . getTableName('settings') . "`");
             $settings = [];
             foreach ($result as $row) {
-                $settings[$row['setting_key']] = $row['setting_value'];
+                $settings[$row['setting_key']] = htmlspecialchars($row['setting_value']);
             }
         } catch (Exception $e) {
             $settings = [];
@@ -41,16 +40,17 @@ function getSetting($key, $default = null) {
 /**
  * 设置系统设置
  */
-function setSetting($key, $value) {
+function setSetting($key, $value)
+{
     try {
         $db = Database::getInstance();
 
-        $exists = $db->fetchColumn("SELECT COUNT(*) FROM `" . table('settings') . "` WHERE `setting_key` = :key", ['key' => $key]);
+        $exists = $db->fetchColumn("SELECT COUNT(*) FROM `" . getTableName('settings') . "` WHERE `setting_key` = :key", ['key' => $key]);
 
         if ($exists) {
-            return $db->update(table('settings'), ['setting_value' => $value], "`setting_key` = :key", ['key' => $key]);
+            return $db->update(getTableName('settings'), ['setting_value' => $value], "`setting_key` = :key", ['key' => $key]);
         } else {
-            return $db->insert(table('settings'), [
+            return $db->insert(getTableName('settings'), [
                 'setting_key' => $key,
                 'setting_value' => $value,
                 'setting_type' => 'string',
@@ -65,7 +65,8 @@ function setSetting($key, $value) {
 /**
  * 记录操作日志
  */
-function logAction($action, $target_type = null, $target_id = null, $details = null) {
+function logAction($action, $target_type = null, $target_id = null, $details = null)
+{
     try {
         $db = Database::getInstance();
 
@@ -80,7 +81,7 @@ function logAction($action, $target_type = null, $target_id = null, $details = n
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
-        return $db->insert(table('logs'), $log_data);
+        return $db->insert(getTableName('logs'), $log_data);
     } catch (Exception $e) {
         error_log('日志写入失败: ' . $e->getMessage());
         return false;
@@ -90,7 +91,8 @@ function logAction($action, $target_type = null, $target_id = null, $details = n
 /**
  * 获取客户端IP
  */
-function getClientIp() {
+function getClientIp()
+{
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         return $_SERVER['HTTP_CLIENT_IP'];
     } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -103,7 +105,8 @@ function getClientIp() {
 /**
  * 生成CSRF令牌
  */
-function generateCsrfToken() {
+function generateCsrfToken()
+{
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
@@ -113,14 +116,16 @@ function generateCsrfToken() {
 /**
  * 验证CSRF令牌
  */
-function validateCsrfToken($token) {
+function validateCsrfToken($token)
+{
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 
 /**
  * 安全过滤输入
  */
-function safeInput($input) {
+function safeInput($input)
+{
     if (is_array($input)) {
         return array_map('safeInput', $input);
     }
@@ -130,7 +135,8 @@ function safeInput($input) {
 /**
  * 格式化日期时间
  */
-function formatDateTime($datetime, $format = 'Y-m-d H:i:s') {
+function formatDateTime($datetime, $format = 'Y-m-d H:i:s')
+{
     $timestamp = strtotime($datetime);
     return date($format, $timestamp);
 }
@@ -138,10 +144,11 @@ function formatDateTime($datetime, $format = 'Y-m-d H:i:s') {
 /**
  * 获取所有启用的友链列表
  */
-function getActiveLinks() {
+function getActiveLinks()
+{
     try {
         $db = Database::getInstance();
-        return $db->fetchAll("SELECT * FROM `" . table('links') . "` WHERE `status` = 1 ORDER BY `sort_order` ASC, `id` ASC");
+        return $db->fetchAll("SELECT * FROM `" . getTableName('links') . "` WHERE `status` = 1 ORDER BY `sort_order` ASC, `id` ASC");
     } catch (Exception $e) {
         error_log('获取友链列表失败: ' . $e->getMessage());
         return [];
@@ -151,14 +158,15 @@ function getActiveLinks() {
 /**
  * 检查用户是否为管理员
  */
-function isAdmin() {
+function isAdmin()
+{
     return ($_SESSION['role'] ?? '') === 'admin';
 }
 
 /**
  * 检查用户是否为版主
  */
-function isModerator() {
+function isModerator()
+{
     return in_array($_SESSION['role'] ?? '', ['moderator', 'admin']);
 }
-?>

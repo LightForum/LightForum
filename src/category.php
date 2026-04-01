@@ -3,11 +3,8 @@
  * 分类页面 - 支持伪静态URL
  */
 
-// 加载配置和函数
+// 加载系统
 require_once __DIR__ . '/includes/common.php';
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/database.php';
-require_once __DIR__ . '/includes/functions.php';
 
 // 获取分类ID
 $category_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

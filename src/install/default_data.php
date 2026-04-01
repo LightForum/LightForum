@@ -1,6 +1,7 @@
 <?php
+
 /**
- * 默认数据定义 - 完全重构版
+ * 默认数据定义
  * 避免使用MySQL保留字，确保SQL语句安全
  */
 
@@ -9,7 +10,8 @@
  * @param string $prefix 表前缀
  * @return array 默认数据
  */
-function getDefaultData($prefix = 'forum_') {
+function getDefaultData($prefix = 'forum_')
+{
     return [
         // 默认设置
         "{$prefix}settings" => [
@@ -18,6 +20,12 @@ function getDefaultData($prefix = 'forum_') {
                 'setting_value' => '轻论坛',
                 'setting_type' => 'string',
                 'description' => '网站名称'
+            ],
+            [
+                'setting_key' => 'site_domain',
+                'setting_value' => '',
+                'setting_type' => 'string',
+                'description' => '网站自定义域名'
             ],
             [
                 'setting_key' => 'site_title',
@@ -111,7 +119,7 @@ function getDefaultData($prefix = 'forum_') {
                 'description' => '账户激活链接有效期（小时）'
             ]
         ],
-        
+
         // 默认分类
         "{$prefix}categories" => [
             [
@@ -137,13 +145,17 @@ function getDefaultData($prefix = 'forum_') {
         // 默认友链
         "{$prefix}links" => [
             [
-                'name' => 'iKun外链',
-                'url' => 'https://www.ikunwl.com',
-                'description' => 'iKun外链(www.ikunwl.com)是一款优秀的中文分类目录联盟免费收录导航网。',
+                'name' => 'LightForum',
+                'url' => 'https://lightforum.org',
+                'description' => 'LightForum is a Lightweight Forum system',
                 'sort_order' => 100
+            ],
+            [
+                'name' => 'Crogram',
+                'url' => 'https://crogram.org',
+                'description' => 'Open Source Projects and Samples from Crogram',
+                'sort_order' => 200
             ]
         ]
     ];
 }
-?>
-

@@ -2,6 +2,7 @@
 /**
  * 新主题页面 - 支持伪静态URL
  */
+// 加载系统
 require_once __DIR__ . '/includes/common.php';
 
 // 检查是否已登录
@@ -10,11 +11,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ' . getLoginUrl());
     exit;
 }
-
-// 加载配置和函数
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/database.php';
-require_once __DIR__ . '/includes/functions.php';
 
 // 获取预选分类ID
 $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0;
