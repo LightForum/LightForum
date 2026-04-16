@@ -25,6 +25,13 @@
             background-color: #f8f9fa;
             border-top: 1px solid #dee2e6;
         }
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            display: none;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>

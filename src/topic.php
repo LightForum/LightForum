@@ -157,13 +157,21 @@ $page_title = isset($topic) ? $topic['title'] : '主题详情';
 include __DIR__ . '/templates/header.php';
 ?>
 <style>
-    .topic-content img{max-width: 100%;}
+    .topic-content img,
+    .post-content img {
+        max-width: 100%;
+    }
+    @media (max-width: 768px) {
+        .topic-header {
+            flex-direction: column;
+        }
+    }
 </style>
 <div class="container mt-4">
     <?php if (isset($error) && !isset($topic)): ?>
         <div class="alert alert-danger"><?php echo $error; ?></div>
     <?php else: ?>
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="topic-header d-flex justify-content-between align-items-center mb-4">
             <h1><?php echo htmlspecialchars($topic['title']); ?></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
@@ -307,6 +315,7 @@ include __DIR__ . '/templates/header.php';
         <?php endif; ?>
     <?php endif; ?>
 </div>
+
 <?php if (isset($_SESSION['user_id'])): ?>
 <!-- ice -->
 <script type="text/JavaScript" src="./assets/src/iceEditor.js"></script>
@@ -314,19 +323,19 @@ include __DIR__ . '/templates/header.php';
 <script>
  //自定义编辑器菜单
 ice.editor("content",function(e){
-	this.uploadUrl = "assets/src/upload/php-upload.php";
-	this.pasteText = false;
-	this.screenshot = true;
-	this.screenshotUpload = true;
+    this.uploadUrl = "assets/src/upload/php-upload.php";
+    this.pasteText = false;
+    this.screenshot = true;
+    this.screenshotUpload = true;
     this.height='100px'; //高度
     this.create();
-	this.menu = [
-		'foreColor', 'bold', 'italic', 'underline', 'strikeThrough', 'line', 'justifyLeft',
-		'justifyCenter', 'justifyRight', 'indent', 'outdent', 'line', 'insertOrderedList', 'insertUnorderedList', 'line', 'hr', 'face', 'music', 'video', 'insertImage',
-		'removeFormat', 'paste', 'line', 'code'
-	];
-	this.create();
-// 	this.setValue('Hi,My name is iceui。');
+    this.menu = [
+        'foreColor', 'bold', 'italic', 'underline', 'strikeThrough', 'line', 'justifyLeft',
+        'justifyCenter', 'justifyRight', 'indent', 'outdent', 'line', 'insertOrderedList', 'insertUnorderedList', 'line', 'hr', 'face', 'music', 'video', 'insertImage',
+        'removeFormat', 'paste', 'line', 'code'
+    ];
+    this.create();
+    // this.setValue('Hi,My name is iceui。');
 })
 </script>
 <?php endif; ?>
