@@ -16,13 +16,13 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $site_name = $_POST['site_name'] ?? '';
+    $site_name   = $_POST['site_name'] ?? '';
     $site_domain = $_POST['site_domain'] ?? '';
-    $site_title = $_POST['site_title'] ?? '';
-    $site_description = $_POST['site_description'] ?? '';
+    $site_title  = $_POST['site_title'] ?? '';
+    $site_description   = $_POST['site_description'] ?? '';
     $allow_registration = isset($_POST['allow_registration']) ? '1' : '0';
-    $topics_per_page = (int)$_POST['topics_per_page'];
-    $posts_per_page = (int)$_POST['posts_per_page'];
+    $topics_per_page    = (int)$_POST['topics_per_page'];
+    $posts_per_page     = (int)$_POST['posts_per_page'];
     $password_reset_expires = (int)$_POST['password_reset_expires'];
     $account_activation_expires = (int)$_POST['account_activation_expires'];
 
@@ -56,19 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = '更新设置失败: ' . $e->getMessage();
         }
     }
+} else {
+    // 获取当前设置
+    $site_name   = getSetting('site_name', '');
+    $site_domain = getSetting('site_domain', '');
+    $site_title  = getSetting('site_title', '');
+    $site_description   = getSetting('site_description', '');
+    $allow_registration = getSetting('allow_registration', '1');
+    $topics_per_page    = (int)getSetting('topics_per_page', 20);
+    $posts_per_page     = (int)getSetting('posts_per_page', 15);
+    $password_reset_expires = (int)getSetting('password_reset_expires', 60);
+    $account_activation_expires = (int)getSetting('account_activation_expires', 24);
 }
-
-// 获取当前设置
-$site_name   = getSetting('site_name', '');
-$site_domain = getSetting('site_domain', '');
-$site_title  = getSetting('site_title', '');
-$site_description   = getSetting('site_description', '');
-$allow_registration = getSetting('allow_registration', '1');
-$topics_per_page    = (int)getSetting('topics_per_page', 20);
-$posts_per_page     = (int)getSetting('posts_per_page', 15);
-$password_reset_expires = (int)getSetting('password_reset_expires', 60);
-$account_activation_expires = (int)getSetting('account_activation_expires', 24);
-
 // 设置页面标题
 $page_title = '系统设置';
 
@@ -99,23 +98,22 @@ include __DIR__ . '/templates/admin_header.php';
                 <div class="card-body">
                     <form method="post" action="settings.php">
                         <div class="mb-3">
-                            <label for="site_name" class="form-label">站点名称</label>
+                            <label for="site_name" class="form-label">站点名称（网页上直接看到的网站名称）</label>
                             <input type="text" class="form-control" id="site_name" name="site_name" value="<?php echo $site_name; ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="site_domain" class="form-label">站点域名，可自定义访问的网站域名，方便更换域名和资源分发</label>
+                            <label for="site_domain" class="form-label">站点域名（可自定义访问的网站域名，方便更换域名和资源分发）</label>
                             <input type="text" class="form-control" id="site_domain" name="site_domain" value="<?php echo $site_domain; ?>" placeholder="填写域名，如 www.lightforum.org">
                         </div>
                         <div class="mb-3">
-                            <label for="site_title" class="form-label">首页标题</label>
-                            <input type="text" class="form-control" id="site_title" name="site_title" value="<?php echo $site_title; ?>" required>
+                            <label for="site_title" class="form-label">站点标题（网页代码里的 title 描述，常用于SEO）</label>
+                            <input type="text" class="form-control" id="site_title" name="site_title" value="<?php echo $site_title; ?>" placeholder="如 轻论坛" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_description" class="form-label">站点描述</label>
+                            <label for="site_description" class="form-label">站点描述（网页代码里的 description 描述），常用于SEO</label>
                             <textarea class="form-control" id="site_description" name="site_description" rows="3"><?php echo $site_description; ?></textarea>
                         </div>
-
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="allow_registration" name="allow_registration" <?php echo $allow_registration === '1' ? 'checked' : ''; ?>>
                             <label class="form-check-label" for="allow_registration">允许新用户注册</label>
