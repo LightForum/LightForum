@@ -38,15 +38,15 @@ $topics_per_page = getSetting('topics_per_page', '12');
 try {
     $db = Database::getInstance();
     $prefix = defined('DB_PREFIX') ? DB_PREFIX : 'forum_';
-    
+
     // 获取主题总数
     $total_topics = $db->fetchColumn(
         "SELECT COUNT(*) FROM `{$prefix}topics` WHERE `status` = 'published'"
     );
-    
+
     // 计算总页数
     $total_pages = ceil($total_topics / $topics_per_page);
-    
+
     // 获取当前页的主题列表，同时获取作者邮箱
     $offset = ($page - 1) * $topics_per_page;
     
@@ -65,7 +65,7 @@ try {
             'limit' => $topics_per_page
         ]
     );
-    
+
     // 获取分类列表
     $categories = $db->fetchAll(
         "SELECT c.*, COUNT(t.id) as topic_count 
@@ -74,7 +74,7 @@ try {
         GROUP BY c.id 
         ORDER BY c.sort_order ASC"
     );
-    
+
 } catch (Exception $e) {
     $error = '加载主题列表失败: ' . $e->getMessage();
 }
@@ -139,6 +139,14 @@ include __DIR__ . '/templates/header.php';
                     </div>
                 <?php endif; ?>
             </div>
+            <?php if ($total_pages > 1): ?>
+                <div class="mb-4">
+                    <?php 
+                        $pagination_url = getPaginationUrlPattern('index.php');
+                        echo generatePagination($page, $total_pages, $pagination_url); 
+                    ?>
+                </div>
+            <?php endif; ?>
         </div>
         <style>
             .newpost{align-items: center;}
