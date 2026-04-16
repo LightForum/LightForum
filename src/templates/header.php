@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?><?php echo getSetting('site_name', '轻论坛'); ?></title>
+    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?><?php echo getSetting('site_title', '轻论坛'); ?></title>
     <link href="https://static.doucdn.org/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://static.doucdn.org/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
     <style>
@@ -27,7 +27,7 @@
         }
         .back-to-top {
             position: fixed;
-            bottom: 80px;
+            bottom: 40px;
             right: 30px;
             display: none;
             z-index: 1000;

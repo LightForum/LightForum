@@ -9,7 +9,7 @@
                     <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo getSetting('site_name', '轻论坛'); ?>. 保留所有权利。</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0">Powered by <a href="https://github.com/LightForum/LightForum" target="_blank">LightForum</a></p>
+                    <p class="mb-0">Powered by <a href="https://lightforum.org" target="_blank">LightForum</a></p>
                 </div>
             </div>
         </div>
