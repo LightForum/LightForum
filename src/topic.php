@@ -187,8 +187,8 @@ include __DIR__ . '/templates/header.php';
             <div class="card mb-4" id="post-topic">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <strong><?php echo htmlspecialchars($topic['username']); ?></strong>
-                        <span class="text-muted ms-2"><?php echo formatDateTime($topic['created_at']); ?></span>
+                        <a href="<?php echo getUserProfileUrl($topic['user_id']); ?>"><strong><?php echo htmlspecialchars($topic['username']); ?></strong></a>
+                        <span class="text-muted ms-2">作者发布于&nbsp;<?php echo formatDateTime($topic['created_at']); ?></span>
                     </div>
                     <div>
                         <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $topic['user_id'] || $_SESSION['role'] == 'admin')): ?>
@@ -207,20 +207,22 @@ include __DIR__ . '/templates/header.php';
                     </div>
                 </div>
             </div>
+        <?php else: ?>
+            <a class="btn btn-primary mb-4" href="<?php echo getTopicUrl($topic['id']);?>">返回主题首页</a>
         <?php endif; ?>
-        
+
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $index => $post): ?>
-                <div class="card mb-4" id="post-<?php echo $post['id']; ?>">
+                <div class="card mb-2" id="post-<?php echo $post['id']; ?>">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <strong><?php echo htmlspecialchars($post['username']); ?></strong>
+                            <a href="<?php echo getUserProfileUrl($post['user_id']); ?>"><strong><?php echo htmlspecialchars($post['username']); ?></strong></a>
                             <?php if ($post['role'] === 'admin'): ?>
                                 <span class="badge bg-danger ms-1">管理员</span>
                             <?php elseif ($post['role'] === 'moderator'): ?>
                                 <span class="badge bg-warning ms-1">版主</span>
                             <?php endif; ?>
-                            <span class="text-muted ms-2"><?php echo formatDateTime($post['created_at']); ?></span>
+                            <span class="text-muted ms-2">回复于&nbsp;<?php echo formatDateTime($post['created_at']); ?></span>
                         </div>
                         <div>
                             <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $topic['user_id'] || $_SESSION['role'] == 'admin')): ?>
