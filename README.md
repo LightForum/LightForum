@@ -14,7 +14,7 @@ LightForum 是一个简单易用的 PHP 论坛程序，适合小型社区和个�
 
 ## 功能预览
 
-演示地址：[lightforum.uiisc.com](http://lightforum.uiisc.com)
+演示地址：[forum.uiisc.com](http://forum.uiisc.com)
 
 预览截图：
 
